@@ -1,11 +1,16 @@
 from __future__ import annotations
 
 import base64
+import io
 import json
+import time
 from pathlib import Path
 from typing import Any
 
 import requests
+from PIL import Image
+
+from .geo import clamp_nearest_informal
 
 REVIEW_SCHEMA = {
     "type": "object",
@@ -16,6 +21,10 @@ REVIEW_SCHEMA = {
     },
     "required": ["verdict", "evidence", "surface"],
 }
+
+MAX_CHIP_PX = 512
+OLLAMA_TIMEOUT = 240
+REVIEW_DEADLINE_S = 2400
 
 
 def fallback_review(candidate: dict[str, Any]) -> dict[str, Any]:
@@ -52,10 +61,17 @@ def review_candidates(
     selected_ids = {item["properties"]["id"] for item in selected}
     active_model = model or _find_gemma(ollama_url)
     used_model = 0
+    deadline = time.monotonic() + REVIEW_DEADLINE_S
     for item in payload["features"]:
         props = item["properties"]
+        clamp_nearest_informal(props)
         result = fallback_review(props)
-        if props["id"] in selected_ids and active_model and props.get("chip"):
+        if (
+            props["id"] in selected_ids
+            and active_model
+            and props.get("chip")
+            and time.monotonic() < deadline
+        ):
             chip = chip_dir / Path(props["chip"]).name
             if chip.exists():
                 try:
@@ -71,11 +87,11 @@ def review_candidates(
                     )
                     result["action"] = _action_for(vision["verdict"])
                     used_model += 1
-                except (requests.RequestException, ValueError, KeyError, json.JSONDecodeError):
+                except (requests.RequestException, ValueError, KeyError, json.JSONDecodeError, OSError):
                     pass
         props["review"] = result
     output_geojson.parent.mkdir(parents=True, exist_ok=True)
-    output_geojson.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    output_geojson.write_text(json.dumps(payload, indent=2, allow_nan=False), encoding="utf-8")
     return {
         "reviewed": len(selected),
         "model_reviews": used_model,
@@ -91,6 +107,15 @@ def _find_gemma(url: str) -> str | None:
         return next((name for name in names if "gemma" in name.lower()), None)
     except requests.RequestException:
         return None
+
+
+def _encode_chip(chip: Path) -> str:
+    with Image.open(chip) as image:
+        rgb = image.convert("RGB")
+        rgb.thumbnail((MAX_CHIP_PX, MAX_CHIP_PX))
+        buffer = io.BytesIO()
+        rgb.save(buffer, format="JPEG", quality=85)
+    return base64.b64encode(buffer.getvalue()).decode("ascii")
 
 
 def _ollama_vision(chip: Path, model: str, url: str) -> dict[str, str]:
@@ -110,12 +135,12 @@ def _ollama_vision(chip: Path, model: str, url: str) -> dict[str, str]:
                 {
                     "role": "user",
                     "content": prompt,
-                    "images": [base64.b64encode(chip.read_bytes()).decode("ascii")],
+                    "images": [_encode_chip(chip)],
                 }
             ],
             "options": {"temperature": 0},
         },
-        timeout=240,
+        timeout=OLLAMA_TIMEOUT,
     )
     response.raise_for_status()
     parsed = json.loads(response.json()["message"]["content"])
@@ -130,4 +155,3 @@ def _action_for(verdict: str) -> str:
     if verdict == "no":
         return "Do not map from imagery; archive unless a field survey finds a path."
     return "Send a mapper to inspect this location before making any map edit."
-

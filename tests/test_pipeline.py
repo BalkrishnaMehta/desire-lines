@@ -104,6 +104,24 @@ def test_review_fallback_is_structured() -> None:
     json.dumps(review)
 
 
+def test_bbox_filter_keeps_overlapping_features() -> None:
+    from desirelines.predict import _in_bbox
+
+    inside = {
+        "type": "Feature",
+        "geometry": {"type": "Point", "coordinates": [5.12, 52.09]},
+        "properties": {},
+    }
+    outside = {
+        "type": "Feature",
+        "geometry": {"type": "Point", "coordinates": [4.8, 52.4]},
+        "properties": {},
+    }
+    bbox = (5.09, 52.075, 5.155, 52.125)
+    assert _in_bbox(inside, *bbox)
+    assert not _in_bbox(outside, *bbox)
+
+
 def test_clip_bbox_is_inside_green_polygon() -> None:
     from desirelines.geo import fraction_inside
 

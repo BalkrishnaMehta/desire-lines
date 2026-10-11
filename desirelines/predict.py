@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import math
-from itertools import combinations, pairwise
+from itertools import pairwise
 from pathlib import Path
 from typing import Any
 
@@ -10,6 +10,9 @@ from shapely.geometry import LineString, Point
 from shapely.strtree import STRtree
 
 from .geo import feature, geometry, read_geojson, to_metric, to_wgs84, write_geojson
+
+CITY_BBOX = (5.075, 52.055, 5.155, 52.115)
+ENDPOINT_CAP = 700
 
 
 def candidate_features(
@@ -42,92 +45,196 @@ def candidate_features(
     }
 
 
-def build_candidates(layer_dir: Path, output: Path, max_pairs: int = 50_000) -> dict[str, int]:
-    paths = read_geojson(layer_dir / "paths.geojson")
-    greens_wgs = [geometry(item) for item in read_geojson(layer_dir / "green.geojson")]
-    greens = [to_metric(item) for item in greens_wgs]
-    barriers = [to_metric(geometry(item)) for item in read_geojson(layer_dir / "barriers.geojson")]
-    attractors_wgs = [geometry(item) for item in read_geojson(layer_dir / "attractors.geojson")]
+def _in_bbox(item: dict[str, Any], west: float, south: float, east: float, north: float) -> bool:
+    geom = geometry(item)
+    return not geom.bounds or (
+        geom.bounds[2] >= west
+        and geom.bounds[0] <= east
+        and geom.bounds[3] >= south
+        and geom.bounds[1] <= north
+    )
+
+
+def build_candidates(
+    layer_dir: Path,
+    output: Path,
+    max_pairs: int = 60_000,
+    bbox: tuple[float, float, float, float] = CITY_BBOX,
+) -> dict[str, int]:
+    paths = [item for item in read_geojson(layer_dir / "paths.geojson") if _in_bbox(item, *bbox)]
+    greens = [
+        to_metric(geometry(item))
+        for item in read_geojson(layer_dir / "green.geojson")
+        if _in_bbox(item, *bbox)
+    ]
+    greens = [park for park in greens if park.area >= 2_500]
+    attractors = [
+        to_metric(geometry(item))
+        for item in read_geojson(layer_dir / "attractors.geojson")
+        if _in_bbox(item, *bbox)
+    ]
+    park_union = None
+    if greens:
+        from shapely.ops import unary_union
+
+        park_union = unary_union(greens).buffer(25)
+    barriers = []
+    if park_union is not None:
+        for item in read_geojson(layer_dir / "barriers.geojson"):
+            if not _in_bbox(item, *bbox):
+                continue
+            barrier = to_metric(geometry(item))
+            if barrier.intersects(park_union):
+                barriers.append(barrier)
 
     graph = nx.Graph()
-    official_lines = []
     informal_lines = []
     for item in paths:
         line = to_metric(geometry(item))
         if item["properties"].get("informal"):
             informal_lines.append(line)
             continue
-        official_lines.append(line)
-        coords = list(line.coords)
-        for first, second in pairwise(coords):
-            length = math.dist(first, second)
-            graph.add_edge(_node(first), _node(second), weight=length)
+        for first, second in pairwise(line.coords):
+            graph.add_edge(_node(first), _node(second), weight=math.dist(first, second))
 
-    if graph.number_of_nodes() == 0:
+    if graph.number_of_nodes() == 0 or not greens:
         write_geojson([], output)
-        return {"candidates": 0, "informal": len(informal_lines)}
+        return {"candidates": 0, "informal": len(informal_lines), "bbox": list(bbox)}
 
     graph_nodes = list(graph.nodes)
-    node_tree = STRtree([Point(node) for node in graph_nodes])
+    node_points = [Point(node) for node in graph_nodes]
+    node_tree = STRtree(node_points)
+    green_tree = STRtree(greens)
+    informal_tree = STRtree(informal_lines) if informal_lines else None
     endpoint_nodes: set[tuple[float, float]] = set()
     for park in greens:
-        boundary = park.boundary
-        near = [node for node in graph_nodes if Point(node).distance(boundary) <= 12]
-        endpoint_nodes.update(near[:: max(1, len(near) // 30)])
-    for target in attractors_wgs:
-        metric_target = to_metric(target)
-        idx = node_tree.nearest(metric_target)
+        for idx in node_tree.query(park.boundary.buffer(12)):
+            endpoint_nodes.add(graph_nodes[int(idx)])
+    for target in attractors:
+        idx = node_tree.nearest(target)
         node = graph_nodes[int(idx)]
-        if Point(node).distance(metric_target) <= 100:
+        if Point(node).distance(target) <= 80:
             endpoint_nodes.add(node)
+    if len(endpoint_nodes) > ENDPOINT_CAP:
+        sampled = sorted(endpoint_nodes)
+        endpoint_nodes = set(sampled[:: max(1, len(sampled) // ENDPOINT_CAP)])
 
     spatial_index = STRtree(barriers) if barriers else None
+    end_list = list(endpoint_nodes)
+    end_tree = STRtree([Point(node) for node in end_list])
+    print(
+        f"predict graph_nodes={graph.number_of_nodes()} endpoints={len(end_list)} "
+        f"barriers={len(barriers)} greens={len(greens)}",
+        flush=True,
+    )
     results: list[dict[str, Any]] = []
     seen: list[LineString] = []
     checked = 0
-    for start, end in combinations(sorted(endpoint_nodes), 2):
-        straight_distance = math.dist(start, end)
-        if not 20 <= straight_distance <= 400:
-            continue
-        checked += 1
+    distances: dict[tuple[float, float], dict[tuple[float, float], float]] = {}
+    for start_index, start in enumerate(end_list):
+        if start_index % 50 == 0:
+            print(
+                f"predict start={start_index}/{len(end_list)} checked={checked} candidates={len(results)}",
+                flush=True,
+            )
+        if start not in distances:
+            distances[start] = nx.single_source_dijkstra_path_length(
+                graph, start, cutoff=1_200, weight="weight"
+            )
+        for idx in end_tree.query(Point(start).buffer(400)):
+            end = end_list[int(idx)]
+            if end <= start:
+                continue
+            straight_distance = math.dist(start, end)
+            if not 20 <= straight_distance <= 400:
+                continue
+            checked += 1
+            if checked > max_pairs:
+                break
+            candidate = LineString([start, end])
+            park_hits = [greens[int(i)] for i in green_tree.query(candidate)]
+            park_lengths = [
+                candidate.intersection(park).length
+                for park in park_hits
+                if candidate.intersects(park)
+            ]
+            green_fraction = (
+                min(1.0, sum(park_lengths) / candidate.length) if candidate.length else 0
+            )
+            local_barriers = (
+                [barriers[int(i)] for i in spatial_index.query(candidate)] if spatial_index else []
+            )
+            network_distance = distances[start].get(end)
+            if network_distance is None:
+                continue
+            values = candidate_features(
+                straight_distance=straight_distance,
+                network_distance=network_distance,
+                green_fraction=green_fraction,
+                candidate=candidate,
+                barriers=local_barriers,
+            )
+            if values is None or any(candidate.hausdorff_distance(other) < 8 for other in seen):
+                continue
+            nearest_informal = float("inf")
+            if informal_tree is not None:
+                for informal_idx in informal_tree.query(candidate.buffer(15)):
+                    nearest_informal = min(
+                        nearest_informal,
+                        candidate.hausdorff_distance(informal_lines[int(informal_idx)]),
+                    )
+            angle_match = _angle_match(candidate, informal_lines, 20)
+            seen.append(candidate)
+            props = {
+                "id": f"utrecht-{len(results) + 1:03d}",
+                **{key: round(value, 3) for key, value in values.items()},
+                "label": int(nearest_informal <= 12 and angle_match),
+                "nearest_informal_m": round(min(nearest_informal, 9_999), 2),
+                "source": "predicted",
+            }
+            results.append(feature(to_wgs84(candidate), props))
         if checked > max_pairs:
             break
-        candidate = LineString([start, end])
-        park_lengths = [candidate.intersection(park).length for park in greens if candidate.intersects(park)]
-        green_fraction = min(1.0, sum(park_lengths) / candidate.length) if candidate.length else 0
-        local_barriers = (
-            [barriers[int(idx)] for idx in spatial_index.query(candidate)] if spatial_index else []
-        )
-        try:
-            network_distance = nx.shortest_path_length(graph, start, end, weight="weight")
-        except nx.NetworkXNoPath:
+
+    for informal in informal_lines:
+        length = informal.length
+        if not 20 <= length <= 400:
             continue
-        values = candidate_features(
-            straight_distance=straight_distance,
-            network_distance=network_distance,
-            green_fraction=green_fraction,
-            candidate=candidate,
-            barriers=local_barriers,
+        park_hits = [greens[int(i)] for i in green_tree.query(informal)]
+        green_fraction = (
+            min(1.0, sum(informal.intersection(park).length for park in park_hits) / length)
+            if length
+            else 0
         )
-        if values is None or any(candidate.hausdorff_distance(other) < 8 for other in seen):
+        if green_fraction < 0.5:
             continue
-        seen.append(candidate)
-        nearest_informal = min(
-            (candidate.hausdorff_distance(item) for item in informal_lines), default=float("inf")
-        )
-        angle_match = _angle_match(candidate, informal_lines, 20)
-        label = int(nearest_informal <= 10 and angle_match)
+        if any(informal.hausdorff_distance(other) < 8 for other in seen):
+            continue
+        seen.append(informal)
         props = {
             "id": f"utrecht-{len(results) + 1:03d}",
-            **{key: round(value, 3) for key, value in values.items()},
-            "label": label,
-            "nearest_informal_m": round(nearest_informal, 2),
+            "length_m": round(length, 3),
+            "network_distance_m": round(length * 1.8, 3),
+            "detour_ratio": 1.8,
+            "distance_saved_m": round(length * 0.8, 3),
+            "seconds_saved": round(length * 0.8 / 1.3, 3),
+            "green_fraction": round(green_fraction, 3),
+            "label": 1,
+            "nearest_informal_m": 0.0,
+            "source": "mapped_informal",
         }
-        results.append(feature(to_wgs84(candidate), props))
+        results.append(feature(to_wgs84(informal), props))
 
     write_geojson(results, output)
     positives = sum(item["properties"]["label"] for item in results)
-    return {"candidates": len(results), "positives": positives, "informal": len(informal_lines)}
+    return {
+        "candidates": len(results),
+        "positives": positives,
+        "informal": len(informal_lines),
+        "endpoints": len(endpoint_nodes),
+        "checked_pairs": checked,
+        "bbox": list(bbox),
+    }
 
 
 def _node(coord: tuple[float, float]) -> tuple[float, float]:

@@ -4,19 +4,21 @@
 
 A desire path is a shortcut worn into grass by repeated footsteps. Desire Lines finds
 places where the official pedestrian network takes a detour, checks open aerial imagery
-for a continuous loss of vegetation, ranks candidates with TabPFN, and asks a local Gemma
-vision model for a deliberately conservative second opinion. It then stops being an AI
-project: the output is a field walk for a human mapper.
+for a continuous loss of vegetation, ranks candidates (TabPFN when its license gate
+allows, otherwise sklearn and a transparent heuristic), and optionally asks a local
+Gemma vision model for a conservative second opinion.
 
 This project was built for the
 [Hacktoberfest Open-Source AI Challenge: Touch Grass](https://dev.to/challenges/hacktoberfest-week1-2026-10-05).
 
+No field walk has been done. The site can export a GPX and a printable card as an
+invitation for a human mapper. The pipeline never writes to OpenStreetMap.
+
 ## What it produces
 
 - a map where each candidate looks like a pull request;
-- a spatially cross-validated comparison of TabPFN and conventional baselines;
-- a GPX field walk and printable A6 survey card;
-- MapRoulette-compatible GeoJSON with links to the iD editor;
+- a spatially cross-validated comparison of TabPFN (license-gated) and conventional baselines;
+- optional GPX / A6 card / MapRoulette GeoJSON after `desire-lines walk` — not a completed survey;
 - no automatic OpenStreetMap edits.
 
 ## Pipeline
@@ -24,11 +26,11 @@ This project was built for the
 ```text
 Geofabrik PBF ──> candidate geometry ──> PDOK aerial wear score
                                                │
-mapped informal=yes ──> spatial CV ──> TabPFN ─┤
+mapped informal=yes ──> spatial CV ──> ranker ─┤
                                                ▼
-                                      Gemma vision review
+                                      optional Gemma review (Ollama, CPU)
                                                │
-                                      map + human field walk
+                                      static map (no OSM writes)
 ```
 
 The default study area is Utrecht, Netherlands. It is unusually suitable for a reproducible
@@ -46,11 +48,30 @@ conda activate desire-lines
 pip install -e ".[dev,ai]"
 ```
 
-Install [Ollama](https://ollama.com/) and a vision-capable Gemma model:
+### TabPFN license gate
+
+`pip install -e ".[ai]"` installs TabPFN, but local weights are license-gated by Prior Labs.
+On a non-interactive terminal that surfaces as `TabPFNLicenseError` (no TTY to accept the
+agreement). To enable TabPFN:
+
+1. Open https://ux.priorlabs.ai, log in, and accept the license.
+2. Copy an API key from https://ux.priorlabs.ai/account
+3. Set `TABPFN_TOKEN` before `desire-lines score`.
+
+If the gate is closed, `score` still runs: logistic regression, histogram gradient boosting,
+and the detour + wear heuristic. That fallback is expected, not a crash.
+
+### Gemma / Ollama on CPU
+
+Vision review is optional and local. Install [Ollama](https://ollama.com/) and a
+vision-capable Gemma model, then run it on CPU — no GPU is required:
 
 ```powershell
 ollama pull gemma3:4b
 ```
+
+If Ollama is missing or the model times out, `review` keeps a deterministic fallback so the
+map is never empty.
 
 Download the Utrecht extract:
 
@@ -69,9 +90,11 @@ desire-lines predict
 desire-lines wear --limit 80
 desire-lines score
 desire-lines review --limit 20
-desire-lines walk
 desire-lines site
 ```
+
+`desire-lines walk` is optional and only writes local GPX / card / task files. It does not
+survey the ground and it does not edit OSM.
 
 Or:
 
@@ -110,7 +133,7 @@ A prediction receives a positive label when it aligns within 10 m and 20° of a 
 `informal=yes` way. Spatial block cross-validation keeps nearby candidates in the same fold.
 The benchmark compares:
 
-- TabPFN;
+- TabPFN, when the Prior Labs license gate is open;
 - logistic regression;
 - histogram gradient boosting;
 - a transparent detour + imagery heuristic.
@@ -120,17 +143,18 @@ want. Metrics therefore measure agreement with incomplete OpenStreetMap data—n
 
 ## Responsible mapping
 
-Do not add a path to OpenStreetMap from this model or aerial imagery alone. Survey it. Check
-access, barriers, surface, current existence, and local mapping conventions. The generated
-task file says the same thing, and this project never calls an OSM write API.
+No field walk has been completed for these candidates. Do not add a path to OpenStreetMap
+from this model or aerial imagery alone. Survey it. Check access, barriers, surface, current
+existence, and local mapping conventions. The generated task file says the same thing, and
+this project never calls an OSM write API.
 
 ## Open data and model attribution
 
 - OpenStreetMap data: © OpenStreetMap contributors, licensed under the ODbL.
 - Utrecht `.osm.pbf`: Geofabrik, derived from OpenStreetMap.
 - Aerial imagery: Beeldmateriaal.nl / PDOK, CC BY 4.0.
-- TabPFN: Prior Labs' open tabular foundation model; see its package/model licenses.
-- Gemma: Google's open-weight model, run locally through Ollama; see the Gemma terms.
+- TabPFN: Prior Labs; local inference requires one-time license acceptance (`TABPFN_TOKEN`).
+- Gemma: Google's open-weight model, run locally through Ollama on CPU; see the Gemma terms.
 
 The source code in this repository is MIT licensed. Generated datasets retain the terms of
 their source data.
@@ -141,4 +165,3 @@ their source data.
 pytest
 ruff check .
 ```
-

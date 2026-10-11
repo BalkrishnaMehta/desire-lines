@@ -10,7 +10,5 @@ build/
 data/raw/
 data/cache/
 data/generated/
-site/data/
-site/chips/
 .superpowers/
 

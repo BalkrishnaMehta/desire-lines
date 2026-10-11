@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 from collections.abc import Iterable
 from pathlib import Path
 from typing import Any
@@ -11,6 +12,20 @@ from shapely.ops import transform, unary_union
 
 WGS84_TO_METRIC = Transformer.from_crs("EPSG:4326", "EPSG:28992", always_xy=True)
 METRIC_TO_WGS84 = Transformer.from_crs("EPSG:28992", "EPSG:4326", always_xy=True)
+NEAREST_INFORMAL_CAP = 9999.0
+
+
+def clamp_nearest_informal(properties: dict[str, Any], cap: float = NEAREST_INFORMAL_CAP) -> None:
+    value = properties.get("nearest_informal_m")
+    if value is None:
+        return
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        properties["nearest_informal_m"] = cap
+        return
+    if not math.isfinite(number) or number > cap:
+        properties["nearest_informal_m"] = cap
 
 
 def to_metric(geometry):
@@ -30,8 +45,12 @@ def fraction_inside(line: LineString, polygons: Iterable) -> float:
 
 def write_geojson(features: list[dict[str, Any]], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    for item in features:
+        props = item.get("properties")
+        if isinstance(props, dict):
+            clamp_nearest_informal(props)
     payload = {"type": "FeatureCollection", "features": features}
-    path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    path.write_text(json.dumps(payload, indent=2, allow_nan=False), encoding="utf-8")
 
 
 def read_geojson(path: Path) -> list[dict[str, Any]]:

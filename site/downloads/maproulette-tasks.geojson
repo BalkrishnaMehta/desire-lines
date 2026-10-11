@@ -1,0 +1,193 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.14181250146724,
+            52.10309160397809
+          ],
+          [
+            5.141420301466848,
+            52.103139903978125
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-080",
+        "instruction": "Survey only. Do not map from imagery alone.",
+        "id_editor": "https://www.openstreetmap.org/edit?editor=id#map=20/52.1030916/5.1418125"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.141658601467079,
+            52.10299860397805
+          ],
+          [
+            5.141806301467229,
+            52.10296750397806
+          ],
+          [
+            5.1420440014674655,
+            52.10291740397799
+          ],
+          [
+            5.142090901467512,
+            52.10289670397799
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-079",
+        "instruction": "Survey only. Do not map from imagery alone.",
+        "id_editor": "https://www.openstreetmap.org/edit?editor=id#map=20/52.1029986/5.1416586"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.142203101467627,
+            52.10296320397801
+          ],
+          [
+            5.142359501467782,
+            52.10295980397801
+          ],
+          [
+            5.142473601467898,
+            52.10297830397806
+          ],
+          [
+            5.142533401467956,
+            52.10297880397802
+          ],
+          [
+            5.142628301468052,
+            52.102965703978015
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-081",
+        "instruction": "Survey only. Do not map from imagery alone.",
+        "id_editor": "https://www.openstreetmap.org/edit?editor=id#map=20/52.1029632/5.1422031"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.127648046007959,
+            52.098971796052275
+          ],
+          [
+            5.128506171669068,
+            52.09862152974806
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-065",
+        "instruction": "Survey only. Do not map from imagery alone.",
+        "id_editor": "https://www.openstreetmap.org/edit?editor=id#map=20/52.0989718/5.1276480"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.127648046007959,
+            52.098971796052275
+          ],
+          [
+            5.129164751279568,
+            52.09954173114235
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-066",
+        "instruction": "Survey only. Do not map from imagery alone.",
+        "id_editor": "https://www.openstreetmap.org/edit?editor=id#map=20/52.0989718/5.1276480"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.126737803654741,
+            52.09375833490987
+          ],
+          [
+            5.126907635225725,
+            52.09346183431803
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-039",
+        "instruction": "Survey only. Do not map from imagery alone.",
+        "id_editor": "https://www.openstreetmap.org/edit?editor=id#map=20/52.0937583/5.1267378"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.126737803654741,
+            52.09375833490987
+          ],
+          [
+            5.127125015665175,
+            52.092967970674046
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-038",
+        "instruction": "Survey only. Do not map from imagery alone.",
+        "id_editor": "https://www.openstreetmap.org/edit?editor=id#map=20/52.0937583/5.1267378"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.138678808199026,
+            52.08828467149571
+          ],
+          [
+            5.141911232808641,
+            52.08770200291686
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-049",
+        "instruction": "Survey only. Do not map from imagery alone.",
+        "id_editor": "https://www.openstreetmap.org/edit?editor=id#map=20/52.0882847/5.1386788"
+      }
+    }
+  ]
+}

@@ -1,0 +1,1745 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.14181250146724,
+            52.10309160397809
+          ],
+          [
+            5.141420301466848,
+            52.103139903978125
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-080",
+        "length_m": 27.403,
+        "network_distance_m": 49.326,
+        "detour_ratio": 1.8,
+        "distance_saved_m": 21.923,
+        "seconds_saved": 16.864,
+        "green_fraction": 1.0,
+        "label": 1,
+        "nearest_informal_m": 0.0,
+        "source": "mapped_informal",
+        "wear": -0.392,
+        "continuity": 0.204,
+        "chip": "chips/utrecht-080.jpg",
+        "score": 0.9927,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "The red line indicates a predicted shortcut. However, beneath the red line, the area is obscured by dense vegetation and shadows. The resolution is insufficient to determine if a narrow continuous worn track is present.",
+          "surface": "unclear",
+          "title": "Formalise 27 m pedestrian shortcut",
+          "diff": "+27 m informal path; saves about 17 seconds",
+          "action": "Send a mapper to inspect this location before making any map edit.",
+          "source": "gemma3:4b"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.090202101414753,
+            52.086872903968526
+          ],
+          [
+            5.0902481014148,
+            52.086893903968544
+          ],
+          [
+            5.090267301414819,
+            52.086931303968555
+          ],
+          [
+            5.0902633014148195,
+            52.0869671039686
+          ],
+          [
+            5.0902547014148105,
+            52.087000503968625
+          ],
+          [
+            5.090229801414787,
+            52.08703000396861
+          ],
+          [
+            5.090198901414759,
+            52.08704760396865
+          ],
+          [
+            5.090144101414705,
+            52.08706050396867
+          ],
+          [
+            5.090073001414633,
+            52.08705760396867
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-078",
+        "length_m": 31.532,
+        "network_distance_m": 56.757,
+        "detour_ratio": 1.8,
+        "distance_saved_m": 25.225,
+        "seconds_saved": 19.404,
+        "green_fraction": 1.0,
+        "label": 1,
+        "nearest_informal_m": 0.0,
+        "source": "mapped_informal",
+        "wear": -0.204,
+        "continuity": 0.26,
+        "chip": "chips/utrecht-078.jpg",
+        "score": 0.9692,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "The red line indicates a predicted shortcut. However, beneath the line, the area is obscured by trees and shadows, making it impossible to determine if a narrow continuous worn track is present.",
+          "surface": "unclear",
+          "title": "Formalise 32 m pedestrian shortcut",
+          "diff": "+32 m informal path; saves about 19 seconds",
+          "action": "Send a mapper to inspect this location before making any map edit.",
+          "source": "gemma3:4b"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.141658601467079,
+            52.10299860397805
+          ],
+          [
+            5.141806301467229,
+            52.10296750397806
+          ],
+          [
+            5.1420440014674655,
+            52.10291740397799
+          ],
+          [
+            5.142090901467512,
+            52.10289670397799
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-079",
+        "length_m": 31.862,
+        "network_distance_m": 57.351,
+        "detour_ratio": 1.8,
+        "distance_saved_m": 25.489,
+        "seconds_saved": 19.607,
+        "green_fraction": 1.0,
+        "label": 1,
+        "nearest_informal_m": 0.0,
+        "source": "mapped_informal",
+        "wear": -0.125,
+        "continuity": 0.214,
+        "chip": "chips/utrecht-079.jpg",
+        "score": 0.9537,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "The red line indicates a predicted path. However, the area beneath the line is obscured by dense vegetation and shadows, making it impossible to determine if a narrow, continuous worn track is present.",
+          "surface": "vegetation",
+          "title": "Formalise 32 m pedestrian shortcut",
+          "diff": "+32 m informal path; saves about 20 seconds",
+          "action": "Send a mapper to inspect this location before making any map edit.",
+          "source": "gemma3:4b"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.1038977422513625,
+            52.11321289123645
+          ],
+          [
+            5.104409419346884,
+            52.113284585344154
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-073",
+        "length_m": 35.945,
+        "network_distance_m": 56.867,
+        "detour_ratio": 1.582,
+        "distance_saved_m": 20.921,
+        "seconds_saved": 16.093,
+        "green_fraction": 0.984,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": -0.075,
+        "continuity": 0.282,
+        "chip": "chips/utrecht-073.jpg",
+        "score": 0.9121,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "The red line indicates a predicted shortcut. However, beneath the red line, there is no clear, continuous worn track visible due to the dense vegetation and shadows. The resolution is also a factor.",
+          "surface": "unclear",
+          "title": "Formalise 36 m pedestrian shortcut",
+          "diff": "+36 m informal path; saves about 16 seconds",
+          "action": "Send a mapper to inspect this location before making any map edit.",
+          "source": "gemma3:4b"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.126737803654741,
+            52.09375833490987
+          ],
+          [
+            5.126907635225725,
+            52.09346183431803
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-039",
+        "length_m": 34.981,
+        "network_distance_m": 90.938,
+        "detour_ratio": 2.6,
+        "distance_saved_m": 55.956,
+        "seconds_saved": 43.043,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": 0.513,
+        "continuity": 0.284,
+        "chip": "chips/utrecht-039.jpg",
+        "score": 0.8558,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "The red line represents a predicted pedestrian shortcut. However, beneath the red line, there is no visible narrow continuous worn track. The area is obscured by dense vegetation and shadows, making it impossible to determine if a track exists.",
+          "surface": "unclear",
+          "title": "Formalise 35 m pedestrian shortcut",
+          "diff": "+35 m informal path; saves about 43 seconds",
+          "action": "Send a mapper to inspect this location before making any map edit.",
+          "source": "gemma3:4b"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.142203101467627,
+            52.10296320397801
+          ],
+          [
+            5.142359501467782,
+            52.10295980397801
+          ],
+          [
+            5.142473601467898,
+            52.10297830397806
+          ],
+          [
+            5.142533401467956,
+            52.10297880397802
+          ],
+          [
+            5.142628301468052,
+            52.102965703978015
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-081",
+        "length_m": 29.567,
+        "network_distance_m": 53.221,
+        "detour_ratio": 1.8,
+        "distance_saved_m": 23.654,
+        "seconds_saved": 18.195,
+        "green_fraction": 1.0,
+        "label": 1,
+        "nearest_informal_m": 0.0,
+        "source": "mapped_informal",
+        "wear": 0.1,
+        "continuity": 0.359,
+        "chip": "chips/utrecht-081.jpg",
+        "score": 0.8188,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "The red line represents a predicted path. The area beneath the red line is obscured by dense vegetation and shadows, making it impossible to determine if a narrow continuous worn track is present.",
+          "surface": "unclear",
+          "title": "Formalise 30 m pedestrian shortcut",
+          "diff": "+30 m informal path; saves about 18 seconds",
+          "action": "Send a mapper to inspect this location before making any map edit.",
+          "source": "gemma3:4b"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.0980803014220895,
+            52.073830003960424
+          ],
+          [
+            5.098295601422304,
+            52.073833003960445
+          ],
+          [
+            5.098479701422491,
+            52.07386070396044
+          ],
+          [
+            5.098643501422655,
+            52.07386950396047
+          ],
+          [
+            5.09873780142275,
+            52.07388610396047
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-077",
+        "length_m": 45.753,
+        "network_distance_m": 82.356,
+        "detour_ratio": 1.8,
+        "distance_saved_m": 36.603,
+        "seconds_saved": 28.156,
+        "green_fraction": 1.0,
+        "label": 1,
+        "nearest_informal_m": 0.0,
+        "source": "mapped_informal",
+        "wear": -0.101,
+        "continuity": 0.311,
+        "chip": "chips/utrecht-077.jpg",
+        "score": 0.7868,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "The red line indicates a path, but the area beneath it is obscured by trees and shadows. The resolution is not sufficient to determine if a narrow continuous worn track is present.",
+          "surface": "unclear",
+          "title": "Formalise 46 m pedestrian shortcut",
+          "diff": "+46 m informal path; saves about 28 seconds",
+          "action": "Send a mapper to inspect this location before making any map edit.",
+          "source": "gemma3:4b"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.087561633909879,
+            52.1058786296536
+          ],
+          [
+            5.087795842618362,
+            52.10521267034065
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-071",
+        "length_m": 75.812,
+        "network_distance_m": 131.779,
+        "detour_ratio": 1.738,
+        "distance_saved_m": 55.967,
+        "seconds_saved": 43.051,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": -0.151,
+        "continuity": 0.248,
+        "chip": "chips/utrecht-071.jpg",
+        "score": 0.6586,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "The image shows dense forest cover. The red line is a prediction, and there is no visible track under the line due to the density of the vegetation and the limitations of the image resolution.",
+          "surface": "unclear",
+          "title": "Formalise 76 m pedestrian shortcut",
+          "diff": "+76 m informal path; saves about 43 seconds",
+          "action": "Send a mapper to inspect this location before making any map edit.",
+          "source": "gemma3:4b"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.127648046007959,
+            52.098971796052275
+          ],
+          [
+            5.128506171669068,
+            52.09862152974806
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-065",
+        "length_m": 70.541,
+        "network_distance_m": 175.862,
+        "detour_ratio": 2.493,
+        "distance_saved_m": 105.32,
+        "seconds_saved": 81.016,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": -0.073,
+        "continuity": 0.384,
+        "chip": "chips/utrecht-065.jpg",
+        "score": 0.6191,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of -0.1\u03c3 with 38% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 71 m pedestrian shortcut",
+          "diff": "+71 m informal path; saves about 81 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.100135690364289,
+            52.07260828305384
+          ],
+          [
+            5.100912858481528,
+            52.072054259316026
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-036",
+        "length_m": 81.478,
+        "network_distance_m": 123.394,
+        "detour_ratio": 1.514,
+        "distance_saved_m": 41.916,
+        "seconds_saved": 32.243,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": -0.086,
+        "continuity": 0.269,
+        "chip": "chips/utrecht-036.jpg",
+        "score": 0.5844,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of -0.1\u03c3 with 27% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 81 m pedestrian shortcut",
+          "diff": "+81 m informal path; saves about 32 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.139886379622681,
+            52.08745931994106
+          ],
+          [
+            5.140337539196489,
+            52.08814308855993
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-051",
+        "length_m": 82.12,
+        "network_distance_m": 196.948,
+        "detour_ratio": 2.398,
+        "distance_saved_m": 114.829,
+        "seconds_saved": 88.33,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": -0.176,
+        "continuity": 0.339,
+        "chip": "chips/utrecht-051.jpg",
+        "score": 0.5127,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of -0.2\u03c3 with 34% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 82 m pedestrian shortcut",
+          "diff": "+82 m informal path; saves about 88 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.115821202675551,
+            52.114475074104
+          ],
+          [
+            5.116805040056953,
+            52.11481501387916
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-020",
+        "length_m": 77.277,
+        "network_distance_m": 136.039,
+        "detour_ratio": 1.76,
+        "distance_saved_m": 58.762,
+        "seconds_saved": 45.201,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": 0.007,
+        "continuity": 0.494,
+        "chip": "chips/utrecht-020.jpg",
+        "score": 0.3244,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of 0.0\u03c3 with 49% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 77 m pedestrian shortcut",
+          "diff": "+77 m informal path; saves about 45 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.121761531246811,
+            52.08110246199092
+          ],
+          [
+            5.122061342874269,
+            52.081370082570515
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-027",
+        "length_m": 36.179,
+        "network_distance_m": 69.026,
+        "detour_ratio": 1.908,
+        "distance_saved_m": 32.847,
+        "seconds_saved": 25.267,
+        "green_fraction": 0.839,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": -0.071,
+        "continuity": 0.219,
+        "chip": "chips/utrecht-027.jpg",
+        "score": 0.3147,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of -0.1\u03c3 with 22% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 36 m pedestrian shortcut",
+          "diff": "+36 m informal path; saves about 25 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.121222985199865,
+            52.06491612392852
+          ],
+          [
+            5.122303247480758,
+            52.06482741739639
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-041",
+        "length_m": 74.731,
+        "network_distance_m": 115.063,
+        "detour_ratio": 1.54,
+        "distance_saved_m": 40.332,
+        "seconds_saved": 31.024,
+        "green_fraction": 0.938,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": 0.069,
+        "continuity": 0.35,
+        "chip": "chips/utrecht-041.jpg",
+        "score": 0.2087,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of 0.1\u03c3 with 35% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 75 m pedestrian shortcut",
+          "diff": "+75 m informal path; saves about 31 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.087561633909879,
+            52.1058786296536
+          ],
+          [
+            5.088747468889377,
+            52.10495838365139
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-070",
+        "length_m": 130.703,
+        "network_distance_m": 220.707,
+        "detour_ratio": 1.689,
+        "distance_saved_m": 90.004,
+        "seconds_saved": 69.234,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": -0.122,
+        "continuity": 0.32,
+        "chip": "chips/utrecht-070.jpg",
+        "score": 0.1691,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of -0.1\u03c3 with 32% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 131 m pedestrian shortcut",
+          "diff": "+131 m informal path; saves about 69 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.087795842618362,
+            52.10521267034065
+          ],
+          [
+            5.08832874453661,
+            52.10669920814657
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-002",
+        "length_m": 169.373,
+        "network_distance_m": 254.587,
+        "detour_ratio": 1.503,
+        "distance_saved_m": 85.214,
+        "seconds_saved": 65.549,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": -0.096,
+        "continuity": 0.238,
+        "chip": "chips/utrecht-002.jpg",
+        "score": 0.1083,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of -0.1\u03c3 with 24% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 169 m pedestrian shortcut",
+          "diff": "+169 m informal path; saves about 66 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.100912858481528,
+            52.072054259316026
+          ],
+          [
+            5.101666965285078,
+            52.07104250055075
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-061",
+        "length_m": 123.874,
+        "network_distance_m": 239.064,
+        "detour_ratio": 1.93,
+        "distance_saved_m": 115.191,
+        "seconds_saved": 88.608,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": -0.012,
+        "continuity": 0.175,
+        "chip": "chips/utrecht-061.jpg",
+        "score": 0.1018,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of -0.0\u03c3 with 18% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 124 m pedestrian shortcut",
+          "diff": "+124 m informal path; saves about 89 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.140337539196489,
+            52.08814308855993
+          ],
+          [
+            5.141593414413716,
+            52.08895778259656
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-029",
+        "length_m": 124.999,
+        "network_distance_m": 218.72,
+        "detour_ratio": 1.75,
+        "distance_saved_m": 93.722,
+        "seconds_saved": 72.094,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": -0.009,
+        "continuity": 0.359,
+        "chip": "chips/utrecht-029.jpg",
+        "score": 0.076,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of -0.0\u03c3 with 36% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 125 m pedestrian shortcut",
+          "diff": "+125 m informal path; saves about 72 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.126737803654741,
+            52.09375833490987
+          ],
+          [
+            5.127125015665175,
+            52.092967970674046
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-038",
+        "length_m": 91.852,
+        "network_distance_m": 153.615,
+        "detour_ratio": 1.672,
+        "distance_saved_m": 61.764,
+        "seconds_saved": 47.51,
+        "green_fraction": 0.931,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": 0.147,
+        "continuity": 0.283,
+        "chip": "chips/utrecht-038.jpg",
+        "score": 0.0685,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of 0.1\u03c3 with 28% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 92 m pedestrian shortcut",
+          "diff": "+92 m informal path; saves about 48 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.1310194923502435,
+            52.07175070928862
+          ],
+          [
+            5.131557738375052,
+            52.072432365993286
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-012",
+        "length_m": 84.342,
+        "network_distance_m": 131.02,
+        "detour_ratio": 1.553,
+        "distance_saved_m": 46.678,
+        "seconds_saved": 35.906,
+        "green_fraction": 0.908,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": 0.108,
+        "continuity": 0.404,
+        "chip": "chips/utrecht-012.jpg",
+        "score": 0.068,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of 0.1\u03c3 with 40% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 84 m pedestrian shortcut",
+          "diff": "+84 m informal path; saves about 36 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.100912858481528,
+            52.072054259316026
+          ],
+          [
+            5.102344835839571,
+            52.07137094799056
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-062",
+        "length_m": 124.173,
+        "network_distance_m": 201.477,
+        "detour_ratio": 1.623,
+        "distance_saved_m": 77.303,
+        "seconds_saved": 59.464,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": 0.021,
+        "continuity": 0.514,
+        "chip": "chips/utrecht-062.jpg",
+        "score": 0.0585,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of 0.0\u03c3 with 51% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 124 m pedestrian shortcut",
+          "diff": "+124 m informal path; saves about 59 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.092989272075134,
+            52.11141581049512
+          ],
+          [
+            5.093628945047807,
+            52.11206463346855
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-019",
+        "length_m": 84.446,
+        "network_distance_m": 175.438,
+        "detour_ratio": 2.078,
+        "distance_saved_m": 90.992,
+        "seconds_saved": 69.994,
+        "green_fraction": 0.933,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": 0.095,
+        "continuity": 0.396,
+        "chip": "chips/utrecht-019.jpg",
+        "score": 0.0449,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of 0.1\u03c3 with 40% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 84 m pedestrian shortcut",
+          "diff": "+84 m informal path; saves about 70 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.133772139825096,
+            52.056584568162116
+          ],
+          [
+            5.135312164720788,
+            52.056085164777336
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-033",
+        "length_m": 119.347,
+        "network_distance_m": 218.314,
+        "detour_ratio": 1.829,
+        "distance_saved_m": 98.967,
+        "seconds_saved": 76.129,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": 0.103,
+        "continuity": 0.397,
+        "chip": "chips/utrecht-033.jpg",
+        "score": 0.0425,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of 0.1\u03c3 with 40% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 119 m pedestrian shortcut",
+          "diff": "+119 m informal path; saves about 76 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.140337539196489,
+            52.08814308855993
+          ],
+          [
+            5.141911232808641,
+            52.08770200291686
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-028",
+        "length_m": 118.497,
+        "network_distance_m": 367.077,
+        "detour_ratio": 3.098,
+        "distance_saved_m": 248.581,
+        "seconds_saved": 191.216,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": 0.066,
+        "continuity": 0.292,
+        "chip": "chips/utrecht-028.jpg",
+        "score": 0.04,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of 0.1\u03c3 with 29% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 118 m pedestrian shortcut",
+          "diff": "+118 m informal path; saves about 191 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.127648046007959,
+            52.098971796052275
+          ],
+          [
+            5.129164751279568,
+            52.09954173114235
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-066",
+        "length_m": 121.743,
+        "network_distance_m": 292.967,
+        "detour_ratio": 2.406,
+        "distance_saved_m": 171.225,
+        "seconds_saved": 131.711,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": 0.107,
+        "continuity": 0.38,
+        "chip": "chips/utrecht-066.jpg",
+        "score": 0.039,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of 0.1\u03c3 with 38% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 122 m pedestrian shortcut",
+          "diff": "+122 m informal path; saves about 132 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.134620490880504,
+            52.07017163293797
+          ],
+          [
+            5.135768622746975,
+            52.069234831996205
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-040",
+        "length_m": 130.616,
+        "network_distance_m": 270.132,
+        "detour_ratio": 2.068,
+        "distance_saved_m": 139.516,
+        "seconds_saved": 107.32,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": 0.106,
+        "continuity": 0.245,
+        "chip": "chips/utrecht-040.jpg",
+        "score": 0.0359,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of 0.1\u03c3 with 24% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 131 m pedestrian shortcut",
+          "diff": "+131 m informal path; saves about 107 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.088051043115006,
+            52.10681876420676
+          ],
+          [
+            5.088747468889377,
+            52.10495838365139
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-022",
+        "length_m": 212.413,
+        "network_distance_m": 319.318,
+        "detour_ratio": 1.503,
+        "distance_saved_m": 106.905,
+        "seconds_saved": 82.234,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": -0.132,
+        "continuity": 0.237,
+        "chip": "chips/utrecht-022.jpg",
+        "score": 0.033,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of -0.1\u03c3 with 24% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 212 m pedestrian shortcut",
+          "diff": "+212 m informal path; saves about 82 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.087795842618362,
+            52.10521267034065
+          ],
+          [
+            5.088051043115006,
+            52.10681876420676
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-003",
+        "length_m": 179.547,
+        "network_distance_m": 273.304,
+        "detour_ratio": 1.522,
+        "distance_saved_m": 93.757,
+        "seconds_saved": 72.121,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": 0.058,
+        "continuity": 0.395,
+        "chip": "chips/utrecht-003.jpg",
+        "score": 0.0267,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of 0.1\u03c3 with 40% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 180 m pedestrian shortcut",
+          "diff": "+180 m informal path; saves about 72 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.08832874453661,
+            52.10669920814657
+          ],
+          [
+            5.088747468889377,
+            52.10495838365139
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-057",
+        "length_m": 195.797,
+        "network_distance_m": 300.601,
+        "detour_ratio": 1.535,
+        "distance_saved_m": 104.805,
+        "seconds_saved": 80.619,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": 0.025,
+        "continuity": 0.424,
+        "chip": "chips/utrecht-057.jpg",
+        "score": 0.0152,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of 0.0\u03c3 with 42% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 196 m pedestrian shortcut",
+          "diff": "+196 m informal path; saves about 81 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.142807191334283,
+            52.072723980092505
+          ],
+          [
+            5.14428645553583,
+            52.07350666390434
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-025",
+        "length_m": 133.674,
+        "network_distance_m": 299.251,
+        "detour_ratio": 2.239,
+        "distance_saved_m": 165.577,
+        "seconds_saved": 127.367,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": 0.082,
+        "continuity": 0.268,
+        "chip": "chips/utrecht-025.jpg",
+        "score": 0.0086,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of 0.1\u03c3 with 27% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 134 m pedestrian shortcut",
+          "diff": "+134 m informal path; saves about 127 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.099950536841378,
+            52.072640548666556
+          ],
+          [
+            5.101666965285078,
+            52.07104250055075
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-030",
+        "length_m": 213.216,
+        "network_distance_m": 324.039,
+        "detour_ratio": 1.52,
+        "distance_saved_m": 110.823,
+        "seconds_saved": 85.249,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": 0.015,
+        "continuity": 0.441,
+        "chip": "chips/utrecht-030.jpg",
+        "score": 0.0042,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of 0.0\u03c3 with 44% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 213 m pedestrian shortcut",
+          "diff": "+213 m informal path; saves about 85 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.138678808199026,
+            52.08828467149571
+          ],
+          [
+            5.141911232808641,
+            52.08770200291686
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-049",
+        "length_m": 230.832,
+        "network_distance_m": 343.486,
+        "detour_ratio": 1.488,
+        "distance_saved_m": 112.655,
+        "seconds_saved": 86.657,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": -0.083,
+        "continuity": 0.214,
+        "chip": "chips/utrecht-049.jpg",
+        "score": 0.004,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of -0.1\u03c3 with 21% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 231 m pedestrian shortcut",
+          "diff": "+231 m informal path; saves about 87 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.100135690364289,
+            52.07260828305384
+          ],
+          [
+            5.101666965285078,
+            52.07104250055075
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-034",
+        "length_m": 203.398,
+        "network_distance_m": 325.159,
+        "detour_ratio": 1.599,
+        "distance_saved_m": 121.761,
+        "seconds_saved": 93.663,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": 0.085,
+        "continuity": 0.36,
+        "chip": "chips/utrecht-034.jpg",
+        "score": 0.0039,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of 0.1\u03c3 with 36% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 203 m pedestrian shortcut",
+          "diff": "+203 m informal path; saves about 94 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.14258073568233,
+            52.07236596438623
+          ],
+          [
+            5.14428645553583,
+            52.07350666390434
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-068",
+        "length_m": 172.578,
+        "network_distance_m": 349.437,
+        "detour_ratio": 2.025,
+        "distance_saved_m": 176.859,
+        "seconds_saved": 136.046,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": -0.053,
+        "continuity": 0.255,
+        "chip": "chips/utrecht-068.jpg",
+        "score": 0.0038,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of -0.1\u03c3 with 26% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 173 m pedestrian shortcut",
+          "diff": "+173 m informal path; saves about 136 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.130123198101724,
+            52.06967196969068
+          ],
+          [
+            5.13184708566225,
+            52.06934396626495
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-046",
+        "length_m": 123.705,
+        "network_distance_m": 302.362,
+        "detour_ratio": 2.444,
+        "distance_saved_m": 178.658,
+        "seconds_saved": 137.429,
+        "green_fraction": 0.837,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": -0.095,
+        "continuity": 0.322,
+        "chip": "chips/utrecht-046.jpg",
+        "score": 0.001,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of -0.1\u03c3 with 32% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 124 m pedestrian shortcut",
+          "diff": "+124 m informal path; saves about 137 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.135069757519321,
+            52.06772801346367
+          ],
+          [
+            5.135768622746975,
+            52.069234831996205
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-011",
+        "length_m": 174.361,
+        "network_distance_m": 419.69,
+        "detour_ratio": 2.407,
+        "distance_saved_m": 245.329,
+        "seconds_saved": 188.714,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": 0.136,
+        "continuity": 0.322,
+        "chip": "chips/utrecht-011.jpg",
+        "score": 0.001,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of 0.1\u03c3 with 32% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 174 m pedestrian shortcut",
+          "diff": "+174 m informal path; saves about 189 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.097831631115038,
+            52.072850091623295
+          ],
+          [
+            5.100912858481528,
+            52.072054259316026
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-059",
+        "length_m": 229.058,
+        "network_distance_m": 356.71,
+        "detour_ratio": 1.557,
+        "distance_saved_m": 127.652,
+        "seconds_saved": 98.194,
+        "green_fraction": 0.93,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": -0.12,
+        "continuity": 0.307,
+        "chip": "chips/utrecht-059.jpg",
+        "score": 0.0009,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of -0.1\u03c3 with 31% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 229 m pedestrian shortcut",
+          "diff": "+229 m informal path; saves about 98 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.073022675060572,
+            52.06007324393524
+          ],
+          [
+            5.075570010324321,
+            52.05888944065367
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-007",
+        "length_m": 218.785,
+        "network_distance_m": 443.682,
+        "detour_ratio": 2.028,
+        "distance_saved_m": 224.897,
+        "seconds_saved": 172.998,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": 0.026,
+        "continuity": 0.26,
+        "chip": "chips/utrecht-007.jpg",
+        "score": 0.0006,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of 0.0\u03c3 with 26% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 219 m pedestrian shortcut",
+          "diff": "+219 m informal path; saves about 173 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.1417509737413285,
+            52.09210060584078
+          ],
+          [
+            5.1446790634188435,
+            52.09254806765754
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-063",
+        "length_m": 206.747,
+        "network_distance_m": 364.79,
+        "detour_ratio": 1.764,
+        "distance_saved_m": 158.043,
+        "seconds_saved": 121.571,
+        "green_fraction": 0.893,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": -0.009,
+        "continuity": 0.285,
+        "chip": "chips/utrecht-063.jpg",
+        "score": 0.0003,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of -0.0\u03c3 with 28% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 207 m pedestrian shortcut",
+          "diff": "+207 m informal path; saves about 122 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            5.0751588389331115,
+            52.06041408685161
+          ],
+          [
+            5.075570010324321,
+            52.05888944065367
+          ]
+        ]
+      },
+      "properties": {
+        "id": "utrecht-018",
+        "length_m": 171.958,
+        "network_distance_m": 662.016,
+        "detour_ratio": 3.85,
+        "distance_saved_m": 490.057,
+        "seconds_saved": 376.967,
+        "green_fraction": 1.0,
+        "label": 0,
+        "nearest_informal_m": 9999,
+        "source": "predicted",
+        "wear": 0.004,
+        "continuity": 0.257,
+        "chip": "chips/utrecht-018.jpg",
+        "score": 0.0001,
+        "model": "logistic_regression",
+        "review": {
+          "verdict": "unclear",
+          "evidence": "Open aerial imagery shows a greenness drop of 0.0\u03c3 with 26% corridor continuity.",
+          "surface": "needs a field check",
+          "title": "Formalise 172 m pedestrian shortcut",
+          "diff": "+172 m informal path; saves about 377 seconds",
+          "action": "Field-check, then formalise or reroute without blocking pedestrian access.",
+          "source": "deterministic fallback"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#17352e">
+  <title>Desire Lines — pedestrian pull requests</title>
+  <meta name="description" content="Open AI finds pedestrian shortcuts the city never merged.">
+  <link rel="preconnect" href="https://unpkg.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIINfQ3ynhZ6+K8YtJVpZxJxZ6L0GcA4u3w=" crossorigin="">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#leaflet-map">Skip to map</a>
+  <div class="sheet">
+    <header>
+      <a class="mark" href="#map" aria-label="Desire Lines home">Desire Lines</a>
+      <nav class="tabs" role="tablist" aria-label="Primary">
+        <button class="nav active" role="tab" aria-selected="true" aria-controls="map" id="tab-map" data-tab="map">Map</button>
+        <button class="nav" role="tab" aria-selected="false" aria-controls="walk" id="tab-walk" data-tab="walk">Field walk</button>
+        <button class="nav" role="tab" aria-selected="false" aria-controls="evaluation" id="tab-evaluation" data-tab="evaluation">Evaluation</button>
+      </nav>
+      <a class="source" href="https://dev.to/challenges/hacktoberfest-week1-2026-10-05" rel="noreferrer">Challenge</a>
+    </header>
+    <main>
+      <section id="map" class="panel active" role="tabpanel" aria-labelledby="tab-map">
+        <div class="map-layout">
+          <div class="titleblock">
+            <p class="sheet-id">Utrecht sheet, open aerial imagery</p>
+            <h1>Pull requests the city never merged.</h1>
+            <p class="lede">A desire path is grass touched by so many feet that it becomes a vote.
+            We use open maps, open imagery and open models to find those votes. Nothing is written
+            to OpenStreetMap. No field walk has been done.</p>
+            <div class="stats">
+              <div><span>Candidates</span><strong id="candidate-count">—</strong></div>
+              <div><span>Visible traces</span><strong id="confirmed-count">—</strong></div>
+              <div><span>Minutes reclaimed</span><strong id="minutes-saved">—</strong></div>
+            </div>
+          </div>
+          <div class="map-shell">
+            <div id="leaflet-map" aria-label="Map of predicted desire paths"></div>
+            <article id="pull-request" class="pr-card" hidden>
+              <button id="close-pr" type="button" aria-label="Close pull request">×</button>
+              <p class="kicker">Pedestrian pull request <span id="pr-id"></span>
+                <span id="pr-verdict" class="badge"></span></p>
+              <h2 id="pr-title"></h2>
+              <pre id="pr-diff"></pre>
+              <p id="pr-evidence"></p>
+              <p id="pr-action"></p>
+              <div class="pr-signals">
+                <span id="pr-wear"></span>
+                <span id="pr-continuity"></span>
+              </div>
+              <div class="pr-meta"><span id="pr-model"></span><span id="pr-score"></span></div>
+            </article>
+            <aside class="legend">
+              <div class="legend-title">Review status</div>
+              <div class="key"><i class="swatch yes" aria-hidden="true"></i> Visible trace</div>
+              <div class="key"><i class="swatch unclear" aria-hidden="true"></i> Needs field check</div>
+              <div class="key"><i class="swatch no" aria-hidden="true"></i> Rejected</div>
+              <hr>
+              <label class="switch" for="pdok-toggle">
+                <input id="pdok-toggle" type="checkbox" role="switch" aria-checked="false">
+                <span class="track" aria-hidden="true"></span>
+                PDOK aerial
+              </label>
+            </aside>
+          </div>
+        </div>
+        <p class="attribution">© OpenStreetMap contributors, ODbL. Aerial imagery:
+        Beeldmateriaal.nl / PDOK, CC BY 4.0. Predictions are not map edits.</p>
+      </section>
+
+      <section id="walk" class="panel field" role="tabpanel" aria-labelledby="tab-walk" hidden>
+        <div class="prose">
+          <h2>No field walk has been done.</h2>
+          <p>AI can point at a pale line in a photograph. It cannot tell whether the gate is
+          locked, the ground is flooded, or the path still exists today. These files are an
+          invitation, not a survey record. Nothing is written to OpenStreetMap.</p>
+          <div class="actions">
+            <a href="downloads/desire-lines-walk.gpx" download>Download GPX</a>
+            <a href="downloads/field-card.html" target="_blank" rel="noreferrer">Print A6 field card</a>
+            <a href="downloads/maproulette-tasks.geojson" download>Mapper tasks</a>
+          </div>
+        </div>
+        <ol class="ritual">
+          <li><b>1</b><span><strong>Walk</strong>Put the phone away between stops.</span></li>
+          <li><b>2</b><span><strong>Look</strong>Mark worn, faint, gone or paved.</span></li>
+          <li><b>3</b><span><strong>Map</strong>Edit only what you personally verify.</span></li>
+        </ol>
+      </section>
+
+      <section id="evaluation" class="panel eval" role="tabpanel" aria-labelledby="tab-evaluation" hidden>
+        <div class="prose">
+          <h2>What did the models actually do?</h2>
+          <p>Mapped <code>informal=yes</code> paths are useful labels, but incomplete ones.
+          A supposed false positive may be the unmapped path we are trying to discover.
+          Spatial folds keep nearby examples out of both training and test sets. TabPFN is
+          license-gated; Gemma review runs locally on CPU through Ollama when available.</p>
+          <p class="primary-model" id="primary-model"></p>
+        </div>
+        <div id="metrics" class="metrics"></div>
+      </section>
+    </main>
+    <footer><span>Desire Lines, 2026</span><span>No automatic OSM edits. Human survey required.</span></footer>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="app.js"></script>
+</body>
+</html>

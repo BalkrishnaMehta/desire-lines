@@ -1,0 +1,39 @@
+{
+  "samples": 40,
+  "positives": 5,
+  "features": [
+    "length_m",
+    "network_distance_m",
+    "detour_ratio",
+    "distance_saved_m",
+    "seconds_saved",
+    "green_fraction",
+    "wear",
+    "continuity"
+  ],
+  "spatial_folds": 5,
+  "primary_model": "logistic_regression",
+  "models": {
+    "logistic_regression": {
+      "roc_auc": 0.9771,
+      "pr_auc": 0.8762,
+      "precision_at_10": 0.5
+    },
+    "hist_gradient_boosting": {
+      "roc_auc": 0.5,
+      "pr_auc": 0.125,
+      "precision_at_10": 0.0
+    },
+    "tabpfn": {
+      "error": "OSError: [WinError 10038] An operation was attempted on something that is not a socket; RuntimeError: No TabPFN access token found.\nPlease generate a token at https://platform.priorlabs.ai/account/api-keys and either\n  - set it as the TABPFN_TOKEN environment variable, or\n  - pass it to tabpfn_client.set_access_token('<your-token>').\n\nIn an interactive terminal you can instead run\n  from tabpfn_client import interactive_login; interactive_login()\nto log in or register via the browser."
+    },
+    "detour_wear_heuristic": {
+      "roc_auc": 0.4029,
+      "pr_auc": 0.1176,
+      "precision_at_10": 0.0
+    }
+  },
+  "tabpfn_error": "OSError: [WinError 10038] An operation was attempted on something that is not a socket",
+  "tabpfn_client_error": "RuntimeError: No TabPFN access token found.\nPlease generate a token at https://platform.priorlabs.ai/account/api-keys and either\n  - set it as the TABPFN_TOKEN environment variable, or\n  - pass it to tabpfn_client.set_access_token('<your-token>').\n\nIn an interactive terminal you can instead run\n  from tabpfn_client import interactive_login; interactive_login()\nto log in or register via the browser.",
+  "tabpfn_license_gate": "RuntimeError: No TabPFN access token found.\nPlease generate a token at https://platform.priorlabs.ai/account/api-keys and either\n  - set it as the TABPFN_TOKEN environment variable, or\n  - pass it to tabpfn_client.set_access_token('<your-token>').\n\nIn an interactive terminal you can instead run\n  from tabpfn_client import interactive_login; interactive_login()\nto log in or register via the browser."
+}

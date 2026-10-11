@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import math
 from collections import defaultdict
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -24,6 +25,8 @@ FEATURES = [
     "continuity",
 ]
 
+INFORMAL_DISTANCE_SENTINEL = 9_999.0
+
 
 def spatial_block_folds(
     points: list[tuple[float, float]], block_size: float, n_splits: int
@@ -43,7 +46,8 @@ def spatial_block_folds(
 
 
 def evaluate_models(input_geojson: Path, output_geojson: Path, metrics_path: Path) -> dict[str, Any]:
-    payload = json.loads(input_geojson.read_text(encoding="utf-8"))
+    payload = _load_geojson(input_geojson)
+    _write_json(input_geojson, payload)
     features = payload["features"]
     if len(features) < 4:
         metrics = {"error": "Need at least four candidates", "samples": len(features)}
@@ -51,7 +55,7 @@ def evaluate_models(input_geojson: Path, output_geojson: Path, metrics_path: Pat
         return metrics
 
     x = np.asarray(
-        [[float(item["properties"].get(name, 0.0)) for name in FEATURES] for item in features]
+        [[float(item["properties"].get(name, 0.0) or 0.0) for name in FEATURES] for item in features]
     )
     y = np.asarray([int(item["properties"].get("label", 0)) for item in features])
     points = [
@@ -65,7 +69,7 @@ def evaluate_models(input_geojson: Path, output_geojson: Path, metrics_path: Pat
     if not folds:
         folds = [(list(range(len(features) // 2)), list(range(len(features) // 2, len(features))))]
 
-    model_factories = {
+    model_factories: dict[str, Callable[[], Any]] = {
         "logistic_regression": lambda: make_pipeline(
             StandardScaler(), LogisticRegression(class_weight="balanced", max_iter=1000)
         ),
@@ -73,35 +77,16 @@ def evaluate_models(input_geojson: Path, output_geojson: Path, metrics_path: Pat
             max_iter=100, max_depth=4, class_weight="balanced", random_state=42
         ),
     }
-    tabpfn_error = None
-    try:
-        from tabpfn import TabPFNClassifier
-
-        model_factories["tabpfn"] = lambda: TabPFNClassifier(device="cpu")
-    except (ImportError, RuntimeError, OSError) as exc:  # pragma: no cover
-        tabpfn_error = f"{type(exc).__name__}: {exc}"
 
     predictions: dict[str, np.ndarray] = {}
     reports: dict[str, Any] = {}
     for name, factory in model_factories.items():
-        pred = np.full(len(features), np.nan)
-        errors = []
-        for train, test in folds:
-            if len(np.unique(y[train])) < 2:
-                errors.append("training fold has one class")
-                continue
-            try:
-                model = factory()
-                model.fit(x[train], y[train])
-                pred[test] = model.predict_proba(x[test])[:, 1]
-            except (ValueError, RuntimeError, OSError, AttributeError) as exc:
-                errors.append(f"{type(exc).__name__}: {exc}")
-        valid = ~np.isnan(pred)
-        if valid.sum() >= 2 and len(np.unique(y[valid])) == 2:
-            reports[name] = _metrics(y[valid], pred[valid])
+        report, pred = _cross_validate(factory, x, y, folds, len(features))
+        reports[name] = report
+        if "roc_auc" in report:
             predictions[name] = pred
-        else:
-            reports[name] = {"error": "; ".join(dict.fromkeys(errors)) or "insufficient folds"}
+
+    tabpfn_notes = _fit_tabpfn(reports, predictions, x, y, folds, len(features))
 
     heuristic = np.asarray(
         [
@@ -117,13 +102,18 @@ def evaluate_models(input_geojson: Path, output_geojson: Path, metrics_path: Pat
         _metrics(y, heuristic) if len(np.unique(y)) == 2 else {"error": "one label class"}
     )
     predictions["detour_wear_heuristic"] = heuristic
-    primary = (
-        "tabpfn"
-        if "tabpfn" in predictions
-        else "hist_gradient_boosting"
-        if "hist_gradient_boosting" in predictions
-        else "detour_wear_heuristic"
-    )
+
+    ranked = [
+        (name, reports[name]["roc_auc"])
+        for name in predictions
+        if isinstance(reports.get(name), dict) and "roc_auc" in reports[name]
+    ]
+    if any(name == "tabpfn" and "roc_auc" in reports.get(name, {}) for name in reports):
+        primary = "tabpfn"
+    elif ranked:
+        primary = max(ranked, key=lambda item: item[1])[0]
+    else:
+        primary = "detour_wear_heuristic"
     chosen = predictions[primary]
     for index, item in enumerate(features):
         score = chosen[index]
@@ -132,7 +122,7 @@ def evaluate_models(input_geojson: Path, output_geojson: Path, metrics_path: Pat
         item["properties"]["score"] = round(float(score), 4)
         item["properties"]["model"] = primary
     features.sort(key=lambda item: item["properties"]["score"], reverse=True)
-    metrics = {
+    metrics: dict[str, Any] = {
         "samples": len(features),
         "positives": int(y.sum()),
         "features": FEATURES,
@@ -140,10 +130,97 @@ def evaluate_models(input_geojson: Path, output_geojson: Path, metrics_path: Pat
         "primary_model": primary,
         "models": reports,
     }
-    if tabpfn_error:
-        metrics["tabpfn_import_error"] = tabpfn_error
+    metrics.update(tabpfn_notes)
     _save_results(payload, output_geojson, metrics_path, metrics)
     return metrics
+
+
+def _fit_tabpfn(
+    reports: dict[str, Any],
+    predictions: dict[str, np.ndarray],
+    x: np.ndarray,
+    y: np.ndarray,
+    folds: list[tuple[list[int], list[int]]],
+    n_samples: int,
+) -> dict[str, str]:
+    notes: dict[str, str] = {}
+    backends = _tabpfn_backends(notes)
+    errors: list[str] = []
+    for backend, factory in backends:
+        report, pred = _cross_validate(factory, x, y, folds, n_samples)
+        backend_error = report.get("error")
+        if backend_error:
+            errors.append(str(backend_error))
+            notes[f"{backend}_error"] = str(backend_error)
+            if _looks_like_license_error(backend_error):
+                notes.setdefault("tabpfn_license_gate", str(backend_error))
+        if "roc_auc" in report:
+            reports["tabpfn"] = report
+            predictions["tabpfn"] = pred
+            notes["tabpfn_backend"] = backend
+            return notes
+    if backends or notes or errors:
+        reports["tabpfn"] = {
+            "error": "; ".join(dict.fromkeys(errors))
+            or notes.get("tabpfn_import_error")
+            or notes.get("tabpfn_client_import_error")
+            or "unavailable"
+        }
+    return notes
+
+
+def _tabpfn_backends(notes: dict[str, str]) -> list[tuple[str, Callable[[], Any]]]:
+    backends: list[tuple[str, Callable[[], Any]]] = []
+    try:
+        from tabpfn import TabPFNClassifier
+
+        backends.append(("tabpfn", lambda cls=TabPFNClassifier: cls(device="cpu")))
+    except Exception as exc:  # license/import must not abort scoring
+        message = f"{type(exc).__name__}: {exc}"
+        notes["tabpfn_import_error"] = message
+        if _looks_like_license_error(message):
+            notes["tabpfn_license_gate"] = message
+    try:
+        from tabpfn_client import TabPFNClassifier as TabPFNClientClassifier
+
+        backends.append(("tabpfn_client", lambda cls=TabPFNClientClassifier: cls()))
+    except Exception as exc:  # optional cloud client must not abort scoring
+        message = f"{type(exc).__name__}: {exc}"
+        notes["tabpfn_client_import_error"] = message
+        if _looks_like_license_error(message):
+            notes.setdefault("tabpfn_license_gate", message)
+    return backends
+
+
+def _cross_validate(
+    factory: Callable[[], Any],
+    x: np.ndarray,
+    y: np.ndarray,
+    folds: list[tuple[list[int], list[int]]],
+    n_samples: int,
+) -> tuple[dict[str, Any], np.ndarray]:
+    pred = np.full(n_samples, np.nan)
+    errors: list[str] = []
+    for train, test in folds:
+        if len(np.unique(y[train])) < 2:
+            errors.append("training fold has one class")
+            continue
+        try:
+            model = factory()
+            model.fit(x[train], y[train])
+            pred[test] = model.predict_proba(x[test])[:, 1]
+        except Exception as exc:  # optional models must not abort the pipeline
+            errors.append(f"{type(exc).__name__}: {exc}")
+    valid = ~np.isnan(pred)
+    if valid.sum() >= 2 and len(np.unique(y[valid])) == 2:
+        return _metrics(y[valid], pred[valid]), pred
+    return {"error": "; ".join(dict.fromkeys(errors)) or "insufficient folds"}, pred
+
+
+def _looks_like_license_error(message: object) -> bool:
+    text = str(message)
+    name = text.split(":", 1)[0]
+    return name.endswith("LicenseError") or "TABPFN_TOKEN" in text or "license acceptance" in text.lower()
 
 
 def _metrics(y_true: np.ndarray, scores: np.ndarray) -> dict[str, float]:
@@ -160,11 +237,38 @@ def _sigmoid(value: float) -> float:
     return 1 / (1 + math.exp(-max(min(value, 20), -20)))
 
 
+def _load_geojson(path: Path) -> dict[str, Any]:
+    def parse_constant(name: str) -> float:
+        mapping = {"Infinity": math.inf, "-Infinity": -math.inf, "NaN": math.nan}
+        if name in mapping:
+            return mapping[name]
+        raise ValueError(f"Unknown JSON constant: {name}")
+
+    payload = json.loads(path.read_text(encoding="utf-8"), parse_constant=parse_constant)
+    return _sanitize(payload)
+
+
+def _sanitize(value: Any, key: str | None = None) -> Any:
+    if isinstance(value, dict):
+        return {inner: _sanitize(inner_value, inner) for inner, inner_value in value.items()}
+    if isinstance(value, list):
+        return [_sanitize(item, key) for item in value]
+    if isinstance(value, (np.floating, np.integer)):
+        value = float(value)
+    if isinstance(value, float) and not math.isfinite(value):
+        if key == "nearest_informal_m":
+            return INFORMAL_DISTANCE_SENTINEL
+        return None
+    return value
+
+
+def _write_json(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(_sanitize(payload), indent=2, allow_nan=False), encoding="utf-8")
+
+
 def _save_results(
     payload: dict[str, Any], output: Path, metrics_path: Path, metrics: dict[str, Any]
 ) -> None:
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(payload, indent=2), encoding="utf-8")
-    metrics_path.parent.mkdir(parents=True, exist_ok=True)
-    metrics_path.write_text(json.dumps(metrics, indent=2), encoding="utf-8")
-
+    _write_json(output, payload)
+    _write_json(metrics_path, metrics)
