@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+.venv/
+dist/
+build/
+*.egg-info/
+data/raw/
+data/cache/
+data/generated/
+site/data/
+site/chips/
+.superpowers/
+

@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "desire-lines"
+version = "0.1.0"
+description = "Find pedestrian pull requests the city never merged."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+  "click>=8.1",
+  "numpy>=2.0",
+  "Pillow>=11",
+  "requests>=2.32",
+  "shapely>=2.0",
+  "networkx>=3.4",
+  "pyproj>=3.7",
+  "osmium>=4.1",
+  "scikit-learn>=1.6",
+  "joblib>=1.4",
+]
+
+[project.optional-dependencies]
+ai = ["tabpfn>=2.0"]
+dev = ["pytest>=8.3", "pytest-cov>=6", "ruff>=0.9"]
+
+[project.scripts]
+desire-lines = "desirelines.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["desirelines*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
