@@ -11,7 +11,7 @@ function showTab(name){
     x.classList.toggle('active',on);
     x.hidden=!on;
   });
-  if(name==='map')setTimeout(()=>map.invalidateSize(),0);
+  if(name==='map')setTimeout(frameMap,0);
 }
 tabs.forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
 document.querySelector('.tabs').addEventListener('keydown',e=>{
@@ -30,7 +30,12 @@ document.querySelector('.mark').addEventListener('click',e=>{
 });
 document.querySelector('.skip').addEventListener('click',()=>showTab('map'));
 
-const map=L.map('leaflet-map',{zoomControl:false,attributionControl:true}).setView([52.09,5.12],13);
+const map=L.map('leaflet-map',{zoomControl:false,attributionControl:true}).setView([52.09,5.12],15);
+let lineBounds=null;
+function frameMap(){
+  map.invalidateSize({pan:false});
+  if(lineBounds) map.fitBounds(lineBounds,{padding:[28,28],maxZoom:17});
+}
 L.control.zoom({position:'topleft'}).addTo(map);
 map.attributionControl.setPrefix('');
 map.attributionControl.addAttribution('© OpenStreetMap contributors, ODbL');
@@ -84,22 +89,23 @@ Promise.all([
   fetch('data/metrics.json').then(r=>r.json())
 ]).then(([geo,metrics])=>{
   const bounds=[];
-  let confirmed=0,seconds=0;
+  let checks=0,longest=0;
   geo.features.forEach(f=>{
     const p=f.properties||{};
     const r=p.review||{};
     const v=r.verdict||'unclear';
-    if(v==='yes'){confirmed++;seconds+=p.seconds_saved||0}
+    if(v!=='no') checks++;
+    longest=Math.max(longest,p.seconds_saved||0);
     const layer=L.geoJSON(f,{style:{color:colors[v]||colors.unclear,weight:v==='yes'?6:4,opacity:.9,dashArray:v==='unclear'?'8 7':null}})
       .on('click',()=>openPR(f)).addTo(map);
     bounds.push(layer.getBounds());
   });
   document.getElementById('candidate-count').textContent=geo.features.length;
-  document.getElementById('confirmed-count').textContent=confirmed;
-  document.getElementById('minutes-saved').textContent=Math.round(seconds/60);
+  document.getElementById('check-count').textContent=checks;
+  document.getElementById('longest-shortcut').textContent=longest>=90?Math.round(longest/60)+' min':Math.round(longest)+' s';
   if(bounds.length){
-    const all=bounds.reduce((a,b)=>a.extend(b));
-    map.fitBounds(all.pad(.12));
+    lineBounds=bounds.reduce((a,b)=>a.extend(b)).pad(.08);
+    frameMap();
   }
 
   const primary=metrics.primary_model||'not ranked';
@@ -107,14 +113,13 @@ Promise.all([
   const rows=[];
   const gate=metrics.tabpfn_import_error||(metrics.models&&metrics.models.tabpfn&&metrics.models.tabpfn.error);
   if(gate){
-    rows.push('<div class="gate"><strong>TabPFN license gate</strong><p>'+
-      String(gate).split('\n')[0]+
-      ' Accept the Prior Labs license and set TABPFN_TOKEN, or keep the sklearn / heuristic fallback.</p></div>');
+    rows.push('<div class="gate"><strong>TabPFN did not score</strong><p>Prior Labs blocked this run until the license is accepted and TABPFN_TOKEN is set. Logistic regression is the measured model.</p></div>');
   }
   rows.push(metricRow('Samples',metrics.samples||0,1));
   rows.push(metricRow('Mapped positives',metrics.positives||0,(metrics.positives||0)/Math.max(metrics.samples||1,1)));
   Object.entries(metrics.models||{}).forEach(([name,m])=>{
     if(m&&m.error){
+      if(name==='tabpfn') return;
       rows.push('<div class="metric error"><span>'+name.replaceAll('_',' ')+'</span><strong>'+
         escapeHtml(String(m.error).split('\n')[0])+'</strong></div>');
       return;
@@ -127,6 +132,8 @@ Promise.all([
   console.error(e);
   document.getElementById('candidate-count').textContent='0';
 });
+window.addEventListener('load',frameMap);
+window.addEventListener('resize',()=>map.invalidateSize());
 
 function metricRow(name,value,width){
   const label=String(name).replaceAll('_',' ');

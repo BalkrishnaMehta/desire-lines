@@ -24,6 +24,9 @@ def build_site(generated: Path, site: Path) -> dict[str, Any]:
     (site / "styles.css").write_text(STYLES, encoding="utf-8")
     (site / "app.js").write_text(APP, encoding="utf-8")
     (site / ".nojekyll").write_text("", encoding="utf-8")
+    vendor = Path(__file__).resolve().parent / "vendor"
+    if vendor.exists():
+        shutil.copytree(vendor, site / "vendor", dirs_exist_ok=True)
     return {"features": len(payload["features"]), "site": str(site)}
 
 
@@ -38,8 +41,7 @@ INDEX = """<!doctype html>
   <link rel="preconnect" href="https://unpkg.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-    integrity="sha256-p4NxAoJBhIINfQ3ynhZ6+K8YtJVpZxJxZ6L0GcA4u3w=" crossorigin="">
+  <link rel="stylesheet" href="vendor/leaflet.css">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -65,8 +67,8 @@ INDEX = """<!doctype html>
             to OpenStreetMap. No field walk has been done.</p>
             <div class="stats">
               <div><span>Candidates</span><strong id="candidate-count">—</strong></div>
-              <div><span>Visible traces</span><strong id="confirmed-count">—</strong></div>
-              <div><span>Minutes reclaimed</span><strong id="minutes-saved">—</strong></div>
+              <div><span>Needs field check</span><strong id="check-count">—</strong></div>
+              <div><span>Longest shortcut</span><strong id="longest-shortcut">—</strong></div>
             </div>
           </div>
           <div class="map-shell">
@@ -136,8 +138,7 @@ INDEX = """<!doctype html>
     </main>
     <footer><span>Desire Lines, 2026</span><span>No automatic OSM edits. Human survey required.</span></footer>
   </div>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="vendor/leaflet.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
@@ -269,11 +270,13 @@ header{
 }
 .stats span{font-family:"Barlow Condensed",sans-serif;font-weight:600;font-size:16px}
 .stats strong{font-weight:500;font-size:26px;font-variant-numeric:lining-nums}
-.map-shell{position:relative;min-height:72vh;background:#d7d0c2}
-#leaflet-map{position:absolute;inset:0}
-.leaflet-container{font-family:"Barlow Condensed",sans-serif;background:#d7d0c2}
-.leaflet-tile{filter:saturate(.45) contrast(1.05) brightness(1.04)}
-.aerial-on .leaflet-tile{filter:none}
+.map-shell{position:relative;height:72vh;min-height:560px;overflow:hidden;background:#d7d0c2}
+#leaflet-map{position:absolute;inset:0;width:100%;height:100%}
+.leaflet-container{width:100%;height:100%;overflow:hidden;font-family:"Barlow Condensed",sans-serif;background:#d7d0c2}
+.leaflet-container,.leaflet-container *{box-sizing:content-box}
+.leaflet-container img,img.leaflet-tile{max-width:none !important;max-height:none !important;padding:0 !important}
+.leaflet-tile-pane{filter:saturate(.45) contrast(1.05) brightness(1.04)}
+.aerial-on .leaflet-tile-pane{filter:none}
 .leaflet-control-attribution{
   font-family:"Barlow Condensed",sans-serif !important;
   font-size:12px !important;
@@ -532,8 +535,8 @@ footer{
   .map-layout{display:block;min-height:0}
   .titleblock{border-right:0;border-bottom:1px solid var(--ink);padding:20px 14px 16px}
   .stats{margin-top:22px}
-  .map-shell{display:flex;flex-direction:column;min-height:0}
-  #leaflet-map{position:relative;inset:auto;height:68vh;min-height:420px}
+  .map-shell{display:block;height:auto;min-height:0;overflow:visible}
+  #leaflet-map{position:relative;inset:auto;width:100%;height:68vh;min-height:420px}
   .legend{
     position:static;
     width:auto;
@@ -560,9 +563,9 @@ footer{
   .titleblock{border:none;padding:0 0 8px}
   .lede,.stats{display:none}
   .titleblock h1{font-size:22px}
-  .map-shell{height:auto;min-height:0;display:block}
-  #leaflet-map{position:relative;inset:auto;height:78vh;min-height:0}
-  .leaflet-tile{filter:none !important}
+  .map-shell{height:auto;min-height:0;display:block;overflow:visible}
+  #leaflet-map{position:relative;inset:auto;width:100%;height:78vh;min-height:0}
+  .leaflet-tile-pane{filter:none !important}
   .legend{position:static;width:auto;box-shadow:none;print-color-adjust:exact;-webkit-print-color-adjust:exact}
   .swatch{print-color-adjust:exact;-webkit-print-color-adjust:exact}
   .ritual,.metrics{border-left:none}
@@ -586,7 +589,7 @@ function showTab(name){
     x.classList.toggle('active',on);
     x.hidden=!on;
   });
-  if(name==='map')setTimeout(()=>map.invalidateSize(),0);
+  if(name==='map')setTimeout(frameMap,0);
 }
 tabs.forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
 document.querySelector('.tabs').addEventListener('keydown',e=>{
@@ -605,7 +608,12 @@ document.querySelector('.mark').addEventListener('click',e=>{
 });
 document.querySelector('.skip').addEventListener('click',()=>showTab('map'));
 
-const map=L.map('leaflet-map',{zoomControl:false,attributionControl:true}).setView([52.09,5.12],13);
+const map=L.map('leaflet-map',{zoomControl:false,attributionControl:true}).setView([52.09,5.12],15);
+let lineBounds=null;
+function frameMap(){
+  map.invalidateSize({pan:false});
+  if(lineBounds) map.fitBounds(lineBounds,{padding:[28,28],maxZoom:17});
+}
 L.control.zoom({position:'topleft'}).addTo(map);
 map.attributionControl.setPrefix('');
 map.attributionControl.addAttribution('© OpenStreetMap contributors, ODbL');
@@ -659,22 +667,23 @@ Promise.all([
   fetch('data/metrics.json').then(r=>r.json())
 ]).then(([geo,metrics])=>{
   const bounds=[];
-  let confirmed=0,seconds=0;
+  let checks=0,longest=0;
   geo.features.forEach(f=>{
     const p=f.properties||{};
     const r=p.review||{};
     const v=r.verdict||'unclear';
-    if(v==='yes'){confirmed++;seconds+=p.seconds_saved||0}
+    if(v!=='no') checks++;
+    longest=Math.max(longest,p.seconds_saved||0);
     const layer=L.geoJSON(f,{style:{color:colors[v]||colors.unclear,weight:v==='yes'?6:4,opacity:.9,dashArray:v==='unclear'?'8 7':null}})
       .on('click',()=>openPR(f)).addTo(map);
     bounds.push(layer.getBounds());
   });
   document.getElementById('candidate-count').textContent=geo.features.length;
-  document.getElementById('confirmed-count').textContent=confirmed;
-  document.getElementById('minutes-saved').textContent=Math.round(seconds/60);
+  document.getElementById('check-count').textContent=checks;
+  document.getElementById('longest-shortcut').textContent=longest>=90?Math.round(longest/60)+' min':Math.round(longest)+' s';
   if(bounds.length){
-    const all=bounds.reduce((a,b)=>a.extend(b));
-    map.fitBounds(all.pad(.12));
+    lineBounds=bounds.reduce((a,b)=>a.extend(b)).pad(.08);
+    frameMap();
   }
 
   const primary=metrics.primary_model||'not ranked';
@@ -682,14 +691,13 @@ Promise.all([
   const rows=[];
   const gate=metrics.tabpfn_import_error||(metrics.models&&metrics.models.tabpfn&&metrics.models.tabpfn.error);
   if(gate){
-    rows.push('<div class="gate"><strong>TabPFN license gate</strong><p>'+
-      String(gate).split('\n')[0]+
-      ' Accept the Prior Labs license and set TABPFN_TOKEN, or keep the sklearn / heuristic fallback.</p></div>');
+    rows.push('<div class="gate"><strong>TabPFN did not score</strong><p>Prior Labs blocked this run until the license is accepted and TABPFN_TOKEN is set. Logistic regression is the measured model.</p></div>');
   }
   rows.push(metricRow('Samples',metrics.samples||0,1));
   rows.push(metricRow('Mapped positives',metrics.positives||0,(metrics.positives||0)/Math.max(metrics.samples||1,1)));
   Object.entries(metrics.models||{}).forEach(([name,m])=>{
     if(m&&m.error){
+      if(name==='tabpfn') return;
       rows.push('<div class="metric error"><span>'+name.replaceAll('_',' ')+'</span><strong>'+
         escapeHtml(String(m.error).split('\n')[0])+'</strong></div>');
       return;
@@ -702,6 +710,8 @@ Promise.all([
   console.error(e);
   document.getElementById('candidate-count').textContent='0';
 });
+window.addEventListener('load',frameMap);
+window.addEventListener('resize',()=>map.invalidateSize());
 
 function metricRow(name,value,width){
   const label=String(name).replaceAll('_',' ');

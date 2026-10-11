@@ -144,7 +144,13 @@ def test_site_builder_publishes_data(tmp_path: Path) -> None:
     result = build_site(generated, site)
     assert result["features"] == 0
     assert (site / "data" / "desire-lines.geojson").exists()
-    assert "Pull requests the city never merged" in (site / "index.html").read_text(
-        encoding="utf-8"
-    )
+    html = (site / "index.html").read_text(encoding="utf-8")
+    css = (site / "styles.css").read_text(encoding="utf-8")
+    assert "Pull requests the city never merged" in html
+    assert "vendor/leaflet.js" in html
+    assert "Needs field check" in html
+    assert "height:72vh" in css
+    assert ".leaflet-tile-pane{filter:" in css
+    assert ".leaflet-tile{filter:" not in css
+    assert (site / "vendor" / "leaflet.js").exists()
 
